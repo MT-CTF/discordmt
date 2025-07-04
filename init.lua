@@ -110,11 +110,11 @@ function discord.send(message, id)
     if id then
         data['context'] = id
     end
-    http.fetch({
+    http.fetch_async({
         url = 'localhost:'..tostring(port),
         timeout = timeout,
         post_data = minetest.write_json(data)
-    }, function(_) end)
+    })
 end
 
 function minetest.chat_send_all(message)
