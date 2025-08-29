@@ -145,7 +145,7 @@ minetest.register_globalstep(function(dtime)
             else
                 local res = http.fetch_async_get(ongoing)
 
-                if res.completed then
+                if res.completed == true then
                     ongoing = nil
                     discord.handle_response(res)
                 end
