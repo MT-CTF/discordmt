@@ -129,17 +129,28 @@ minetest.after(0, minetest.register_on_chat_message, function(name, message)
 end)
 
 local timer = 0
+local ongoing = nil
 minetest.register_globalstep(function(dtime)
     if dtime then
         timer = timer + dtime
-        if timer > 0.2 then
-            http.fetch({
-                url = 'localhost:'..tostring(port),
-                timeout = timeout,
-                post_data = minetest.write_json({
-                    type = 'DISCORD-REQUEST-DATA'
+        if timer > 0.9 then
+            if not ongoing then
+                ongoing = http.fetch_async({
+                    url = 'localhost:'..tostring(port),
+                    timeout = timeout,
+                    post_data = minetest.write_json({
+                        type = 'DISCORD-REQUEST-DATA'
+                    })
                 })
-            }, discord.handle_response)
+            else
+                local res = http.fetch_async_get(ongoing)
+
+                if res.completed then
+                    ongoing = nil
+                    discord.handle_response(res)
+                end
+            end
+
             timer = 0
         end
     end
