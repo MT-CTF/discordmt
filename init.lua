@@ -146,8 +146,14 @@ minetest.register_globalstep(function(dtime)
                 local res = http.fetch_async_get(ongoing)
 
                 if res.completed == true then
-                    ongoing = nil
                     discord.handle_response(res)
+                    ongoing = http.fetch_async({
+                        url = 'localhost:'..tostring(port),
+                        timeout = timeout,
+                        post_data = minetest.write_json({
+                            type = 'DISCORD-REQUEST-DATA'
+                        })
+                    })
                 end
             end
 
