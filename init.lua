@@ -28,7 +28,7 @@ function discord.handle_response(response)
     if data == '' or data == nil then
         return
     end
-    local data = minetest.parse_json(response.data)
+    data = minetest.parse_json(response.data)
     if not data then
         return
     end
@@ -105,7 +105,7 @@ end
 function discord.send(message, id)
     local data = {
         type = 'DISCORD-RELAY-MESSAGE',
-        content = minetest.strip_colors(message)
+        content = minetest.strip_colors(message):gsub("\\", "\\\\"):gsub("%*", "\\*"):gsub("_", "\\_"):gsub("^#", "\\#")
     }
     if id then
         data['context'] = id
