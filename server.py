@@ -56,6 +56,7 @@ bot = commands.Bot(
 
 channel_id = int(config['RELAY']['channel_id'])
 
+host = config['RELAY']['host']
 port = int(config['RELAY']['port'])
 token = config['BOT']['token']
 logins_allowed = config['RELAY'].getboolean('allow_logins')
@@ -243,6 +244,6 @@ app.on_startup.append(on_startup)
 if __name__ == '__main__':
     try:
         print('='*37+'\nStarting relay. Press Ctrl-C to exit.\n'+'='*37)
-        web.run_app(app, host='localhost', port=port)
+        web.run_app(app, host=host, port=port)
     except KeyboardInterrupt:
         pass
